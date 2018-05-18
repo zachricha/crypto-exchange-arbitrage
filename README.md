@@ -28,7 +28,7 @@ const arbitrage = require('crypto-exchange-arbitrage');
 let options = {
   exchanges: ['kraken', 'bitfinex2', 'bittrex', 'binance', 'liqui', 'kucoin', 'hitbtc2'],
   percent: 2.5,
-  usdToUsdt: false,
+  usdIsUsdt: false,
 };
 
 arbitrage(options, function(err, result) {

@@ -1,11 +1,11 @@
 async function cryptoExchangeArbitrage(options, callback) {
   'use strict';
 
-  var exchanges = options.exchanges;
-  var greaterThan = options.percent || 1;
-  var usdIsUsdt = options.usdIsUsdt || true;
+  const exchanges = options.exchanges;
+  const greaterThan = options.percent || 1;
+  const usdIsUsdt = options.usdIsUsdt || true;
 
-  var err = null;
+  let err = null;
 
   if(!Array.isArray(exchanges)) {
     err = new Error(`${exchanges} is not an array`);
@@ -14,7 +14,7 @@ async function cryptoExchangeArbitrage(options, callback) {
 
   const ccxt = require('ccxt');
 
-  var result = [];
+  let result = [];
 
   const promises = exchanges.map(async (exchange) => {
     const exch = await new ccxt[exchange]().fetchTickers();
@@ -29,12 +29,12 @@ async function cryptoExchangeArbitrage(options, callback) {
 
   function reduceExchCompares(allExchanges) {
 
-    var alreadyChecked = [];
+    const alreadyChecked = [];
 
-    for(var i = 0; i < allExchanges.length; i++) {
-      for(var j = 0; j < allExchanges.length; j++) {
-        var joinedExchanges = allExchanges[i].id + (allExchanges[j].id);
-        var joinedExchanges2 = allExchanges[j].id + (allExchanges[i].id);
+    for(let i = 0; i < allExchanges.length; i++) {
+      for(let j = 0; j < allExchanges.length; j++) {
+        const joinedExchanges = allExchanges[i].id + (allExchanges[j].id);
+        const joinedExchanges2 = allExchanges[j].id + (allExchanges[i].id);
 
         if (allExchanges[i].id === allExchanges[j].id ||
         alreadyChecked.indexOf(joinedExchanges) > -1 ||
@@ -43,11 +43,11 @@ async function cryptoExchangeArbitrage(options, callback) {
         };
         alreadyChecked.push(joinedExchanges, joinedExchanges2);
 
-        var exchName1 = allExchanges[i].id;
-        var exchName2 = allExchanges[j].id;
+        const exchName1 = allExchanges[i].id;
+        const exchName2 = allExchanges[j].id;
 
-        var exch1 = allExchanges[i].data;
-        var exch2 = allExchanges[j].data;
+        const exch1 = allExchanges[i].data;
+        const exch2 = allExchanges[j].data;
 
         getTickerArbitrage(exchName1, exchName2, exch1, exch2);
       };
@@ -55,14 +55,14 @@ async function cryptoExchangeArbitrage(options, callback) {
   };
 
   function getTickerArbitrage(exchName1, exchName2, exch1, exch2) {
-    for(var key1 in exch1) {
-      for(var key2 in exch2) {
-        var exchange1 = key1;
-        var exchange2 = key2;
+    for(let key1 in exch1) {
+      for(let key2 in exch2) {
+        let exchange1 = key1;
+        let exchange2 = key2;
 
         if(usdIsUsdt) {
-          var pair1 = key1.split('/')[1];
-          var pair2 = key2.split('/')[1];
+          const pair1 = key1.split('/')[1];
+          const pair2 = key2.split('/')[1];
 
           if(pair1 === 'USD') {exchange1 = key1.split('/')[0] + 'USDT'};
           if(pair2 === 'USD') {exchange2 = key2.split('/')[0] + 'USDT'};
@@ -70,10 +70,10 @@ async function cryptoExchangeArbitrage(options, callback) {
 
         if(exchange1 === exchange2) {
 
-          var exch1ToExch2 = (exch2[key2].bid / exch1[key1].ask)*100;
-          var exch2ToExch1 = (exch1[key1].bid / exch2[key2].ask)*100;
+          const exch1ToExch2 = (exch2[key2].bid / exch1[key1].ask)*100;
+          const exch2ToExch1 = (exch1[key1].bid / exch2[key2].ask)*100;
 
-          var percentDiff = 100 + greaterThan;
+          const percentDiff = 100 + greaterThan;
 
           if(exch1ToExch2 >= percentDiff && exch1[key1].ask > 0) {
 
@@ -109,7 +109,7 @@ async function cryptoExchangeArbitrage(options, callback) {
             break;
           };
 
-          var maxBuySellQty = buyAskQty <= sellBidQty ? buyAskQty : sellBidQty;
+          const maxBuySellQty = buyAskQty <= sellBidQty ? buyAskQty : sellBidQty;
 
           result.push({
             arbitragePercent,
