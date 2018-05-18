@@ -52,12 +52,12 @@ Default: ``1``
 
 Percent sets what percentage an arbitrage opportunity has to be greater than or equal to, in order to be returned.
 
-#### usdToUsdt
+#### usdIsUsdt
 
 Type: ``Boolean``
 Default: ``True``
 
-usdToUsdt sets whether or not USD and USDT pairs are considered equal and therefore compared.
+usdIsUsdt sets whether or not USD and USDT pairs are considered equal and therefore compared.
 
 License
 ----
