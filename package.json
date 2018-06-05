@@ -1,6 +1,6 @@
 {
   "name": "crypto-exchange-arbitrage",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Uses the ccxt library to calculate arbitrage opportunites between multiple exchanges.",
   "main": "crypto.exchange.arbitrage.js",
   "scripts": {

@@ -75,31 +75,42 @@ async function cryptoExchangeArbitrage(options, callback) {
 
           const percentDiff = 100 + greaterThan;
 
+          let arbitragePercent;
+          let arbitrageObject;
+
           if(exch1ToExch2 >= percentDiff && exch1[key1].ask > 0) {
 
-            var arbitragePercent = (exch1ToExch2 - 100).toFixed(2);
-            var symbol = exchange1;
-            var buyAt = exchName1;
-            var sellAt = exchName2;
-            var buyAsk = exch1[key1].ask;
-            var sellBid = exch2[key2].bid;
-            var buyAskQty = exch1[key1].info.askQty;
-            var sellBidQty = exch2[key2].info.BidQty;
-            var buyInfo = exch1[key1];
-            var sellInfo = exch2[key2];
+            arbitragePercent = (exch1ToExch2 - 100).toFixed(2);
+
+            arbitrageObject = {
+              arbitragePercent: (exch1ToExch2 - 100).toFixed(2),
+              symbol: exchange1,
+              buyAt: exchName1,
+              sellAt: exchName2,
+              buyAsk: exch1[key1].ask,
+              sellBid: exch2[key2].bid,
+              buyAskQty: exch1[key1].info.askQty,
+              sellBidQty: exch2[key2].info.BidQty,
+              buyInfo: exch1[key1],
+              sellInfo: exch2[key2],
+            };
 
           } else if(exch2ToExch1 >= percentDiff && exch2[key2].ask > 0) {
 
-            var arbitragePercent = (exch2ToExch1 - 100).toFixed(2);
-            var symbol = exchange2;
-            var buyAt = exchName2;
-            var sellAt = exchName1;
-            var buyAsk = exch2[key2].ask;
-            var sellBid = exch1[key1].bid;
-            var buyAskQty = exch2[key2].info.askQty;
-            var sellBidQty = exch1[key1].info.BidQty;
-            var buyInfo = exch2[key2];
-            var sellInfo = exch1[key1];
+            arbitragePercent = (exch2ToExch1 - 100).toFixed(2);
+
+            arbitrageObject = {
+              arbitragePercent: (exch2ToExch1 - 100).toFixed(2),
+              symbol: exchange2,
+              buyAt: exchName2,
+              sellAt: exchName1,
+              buyAsk: exch2[key2].ask,
+              sellBid: exch1[key1].bid,
+              buyAskQty: exch2[key2].info.askQty,
+              sellBidQty: exch1[key1].info.BidQty,
+              buyInfo: exch2[key2],
+              sellInfo: exch1[key1],
+            };
 
           } else {
             break;
@@ -109,21 +120,7 @@ async function cryptoExchangeArbitrage(options, callback) {
             break;
           };
 
-          const maxBuySellQty = buyAskQty <= sellBidQty ? buyAskQty : sellBidQty;
-
-          result.push({
-            arbitragePercent,
-            symbol,
-            buyAt,
-            sellAt,
-            buyAsk,
-            sellBid,
-            buyAskQty,
-            sellBidQty,
-            maxBuySellQty,
-            buyInfo,
-            sellInfo,
-          });
+          result.push(arbitrageObject);
 
           break;
         };
